@@ -1,13 +1,16 @@
-'use client';
-
 import Wordmark from '@/components/Wordmark';
 import { TopNav } from '@/components/TopNav';
-import { motion } from 'framer-motion';
 
 /**
  * Day 1 deliverable per build plan: brand-locked placeholder. Beautiful and
  * on-brand even at "hello world" stage — so anyone who hits the staging URL
  * sees credibility, not broken stuff.
+ *
+ * Rendered statically (no framer-motion mount animation) after production
+ * diagnostic showed the framer-motion mount fade-in could freeze mid-animation
+ * on React 19 + Next 16 + Framer Motion 12. Above-the-fold must render fully
+ * visible immediately. Surgical motion can be added back later (whileInView,
+ * hover interactions, scroll-driven sections — not mount fades).
  *
  * Sections to be built in sequence (Days 3-10):
  *   #hero      — Live Pulse analyzer (Days 3-4) — THE moment.
@@ -30,21 +33,16 @@ export default function Home() {
         <div className="orb bg-plumb/20 w-[600px] h-[600px] bottom-[-200px] right-[-200px]" />
       </div>
 
-      {/* Day-1 placeholder hero — brand-locked, not real Pulse hero yet */}
+      {/* Day-1 placeholder hero — brand-locked, fully static */}
       <section className="relative min-h-screen flex flex-col items-center justify-center px-6 sm:px-12">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl text-center"
-        >
+        <div className="max-w-3xl text-center">
           <p className="text-[11px] tracking-[0.3em] uppercase text-elec font-semibold mb-6">
             <span className="inline-block w-2 h-2 rounded-full bg-elec mr-3 align-middle animate-pulse" />
             v1 in development · staging build
           </p>
 
           <div className="mb-10">
-            <Wordmark size="2xl" onDark animate live />
+            <Wordmark size="2xl" onDark live />
           </div>
 
           <h1 className="font-display text-3xl sm:text-5xl tracking-[-0.03em] leading-[1.05] mb-6 mobile-text-balance">
@@ -74,19 +72,14 @@ export default function Home() {
               <span>→</span>
             </a>
           </div>
-        </motion.div>
+        </div>
 
         {/* Subtle scroll cue */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.6 }}
-          className="absolute bottom-12 text-[10px] tracking-[0.3em] uppercase text-mute-dark font-semibold flex items-center gap-3"
-        >
+        <div className="absolute bottom-12 text-[10px] tracking-[0.3em] uppercase text-mute-dark font-semibold flex items-center gap-3">
           <span className="w-8 h-px bg-mute-dark/40" />
           <span>v1 launch · 10 working days</span>
           <span className="w-8 h-px bg-mute-dark/40" />
-        </motion.div>
+        </div>
       </section>
 
       {/* Future section placeholders — anchor targets for nav links */}
